@@ -3,107 +3,136 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>IPSS Questionnaire – Quick Q&A</title>
+  <title>IPSS Questionnaire – Email Gate → Score</title>
   <style>
-    :root{
-      --bg:#0b1320; --card:#121a2b; --ink:#eaf0ff; --muted:#a9b4d9; --accent:#5dd1ff; --ok:#30d158; --warn:#ffd60a; --bad:#ff453a;
+    :root {
+      --bg: #f9fafb;
+      --card: #ffffff;
+      --ink: #1f2937;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --ok: #16a34a;
+      --warn: #ca8a04;
+      --bad: #dc2626;
     }
-    *{box-sizing:border-box}
-    body{margin:0; font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial; background:linear-gradient(180deg,#0b1320,#0d1630); color:var(--ink);}
-    .wrap{max-width:940px; margin:0 auto; padding:24px}
-    .card{background:var(--card); border:1px solid #1b2742; border-radius:18px; padding:20px; box-shadow:0 10px 30px rgba(0,0,0,.35)}
-    h1{font-weight:700; letter-spacing:.2px; font-size:28px; margin:0 0 6px}
-    h2{font-size:20px; margin:18px 0 10px}
-    p{color:var(--muted); line-height:1.55}
-    .grid{display:grid; gap:14px}
-    .teaser{display:grid; gap:8px; grid-template-columns:1fr 1fr; margin:16px 0}
-    .teaser button{background:#172241; border:1px solid #26345d; color:var(--ink); padding:12px 14px; border-radius:12px; cursor:pointer; font-weight:600}
-    .teaser button:hover{border-color:#3b538f}
-    .pill{display:inline-block; padding:6px 10px; border-radius:999px; font-size:12px; background:#172241; border:1px solid #28406e; color:var(--muted)}
-    .q{margin:10px 0 4px; font-weight:600}
-    fieldset{border:none; padding:0; margin:0 0 12px}
-    .options{display:grid; gap:8px; grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}
-    label.opt{display:flex; align-items:center; gap:10px; background:#111a2d; border:1px solid #21325a; padding:10px 12px; border-radius:12px; cursor:pointer}
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+    }
+    .wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 24px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+    h2 {
+      font-size: 20px;
+      margin: 20px 0 10px;
+      font-weight: 600;
+    }
+    p { color: var(--muted); line-height: 1.55 }
+    .pill {
+      display:inline-block;
+      padding:4px 10px;
+      border-radius:999px;
+      font-size:12px;
+      background:#e5e7eb;
+      color:#374151;
+      margin-bottom:12px;
+    }
+    .options { display:grid; gap:8px; }
+    label.opt {
+      display:flex;
+      align-items:center;
+      gap:10px;
+      background:#f3f4f6;
+      border:1px solid #d1d5db;
+      padding:10px 12px;
+      border-radius:8px;
+      cursor:pointer;
+      transition: background 0.2s;
+    }
+    label.opt:hover { background:#e5e7eb; }
     input[type="radio"]{accent-color:var(--accent)}
-    .row{display:grid; grid-template-columns:1fr; gap:12px}
-    .cta{display:flex; gap:10px; flex-wrap:wrap; margin-top:12px}
-    .btn{background:var(--accent); color:#061024; border:none; padding:12px 16px; border-radius:12px; font-weight:700; cursor:pointer}
-    .btn.alt{background:#172241; border:1px solid #2a3e6f; color:var(--ink)}
-    .hide{display:none}
-    .note{font-size:12px; color:var(--muted)}
-    .result{margin-top:14px; padding:14px; border-radius:12px; border:1px dashed #36538d; background:#0f1930}
-    .badge{font-weight:800; padding:4px 8px; border-radius:999px; font-size:12px}
-    .mild{background:rgba(48,209,88,.15); color:var(--ok); border:1px solid rgba(48,209,88,.35)}
-    .moderate{background:rgba(255,214,10,.12); color:var(--warn); border:1px solid rgba(255,214,10,.42)}
-    .severe{background:rgba(255,69,58,.12); color:var(--bad); border:1px solid rgba(255,69,58,.42)}
-    .hr{height:1px; background:#223258; margin:14px 0}
-    .footer{margin-top:24px; font-size:12px; color:var(--muted)}
-    a{color:var(--accent)}
-    .hdr{display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap}
-    .ok{color:var(--ok)} .warn{color:var(--warn)} .bad{color:var(--bad)}
+    .row { display:grid; gap:12px; }
+    .cta { display:flex; gap:10px; margin-top:16px; }
+    .btn {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor:pointer;
+    }
+    .btn.alt {
+      background:#f3f4f6;
+      color: var(--ink);
+      border:1px solid #d1d5db;
+    }
+    .result {
+      margin-top: 18px;
+      padding: 16px;
+      border-radius: 8px;
+      background: #f9fafb;
+      border: 1px dashed #d1d5db;
+    }
+    .badge {
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 14px;
+    }
+    .mild { background:#dcfce7; color:var(--ok); }
+    .moderate { background:#fef9c3; color:var(--warn); }
+    .severe { background:#fee2e2; color:var(--bad); }
+    .note { font-size:12px; color:var(--muted); }
+    .footer { margin-top:24px; font-size:12px; color:var(--muted); }
   </style>
 </head>
 <body>
   <div class="wrap">
     <div class="card">
-      <div class="hdr">
-        <h1>Quick Q&A → IPSS Symptom Score</h1>
-        <span class="pill">Educational • 3–4 minutes • Email optional</span>
-      </div>
-      <p><strong>How it works:</strong> Answer three quick Yes/No prompts, then complete the 7-question IPSS to see your <em>mild / moderate / severe</em> category. Educational only, not medical advice.</p>
+      <h1>IPSS Symptom Check</h1>
+      <span class="pill">Educational • 2–3 minutes</span>
+      <p>Enter your email to continue. You’ll see your personal IPSS score (mild / moderate / severe) immediately on the next step. This is educational only and not medical advice.</p>
 
-      <!-- Curiosity Teasers -->
-      <h2>Step 1 — Three quick Yes/No prompts</h2>
-      <div id="teasers" class="grid">
-        <div class="card" style="background:#0d1730; border-color:#23335b;">
-          <div class="q">1) Do you ever wake up ≥2 times/night to urinate?</div>
-          <div class="teaser">
-            <button data-teaser="t1" data-val="yes">Yes</button>
-            <button data-teaser="t1" data-val="no">No</button>
+      <!-- Email Gate -->
+      <div id="gate">
+        <h2>Step 1 — Get started</h2>
+        <form id="gateForm">
+          <div class="row">
+            <input type="email" id="email" placeholder="Email (required to continue)" required
+                   style="padding:12px; border-radius:8px; border:1px solid #d1d5db;"/>
           </div>
-          <div id="a-t1" class="hide"><span class="pill">Answer</span>
-            <p>Waking ≥2× may suggest nighttime symptoms (nocturia). Let’s check your full IPSS to understand severity.</p>
+          <label style="display:flex; gap:8px; align-items:flex-start; margin-top:10px; font-size:12px; color:var(--muted)">
+            <input type="checkbox" id="consent" required/> I agree to receive my result and educational messages about urinary health (opt out anytime).
+          </label>
+          <div class="cta">
+            <button type="submit" class="btn">Continue</button>
           </div>
-        </div>
-        <div class="card" style="background:#0d1730; border-color:#23335b;">
-          <div class="q">2) Do you sometimes feel an urgent need to rush to the bathroom?</div>
-          <div class="teaser">
-            <button data-teaser="t2" data-val="yes">Yes</button>
-            <button data-teaser="t2" data-val="no">No</button>
-          </div>
-          <div id="a-t2" class="hide"><span class="pill">Answer</span>
-            <p>Urgency can be part of lower urinary tract symptoms. The IPSS helps quantify patterns.</p>
-          </div>
-        </div>
-        <div class="card" style="background:#0d1730; border-color:#23335b;">
-          <div class="q">3) Do you sometimes feel you haven't fully emptied your bladder?</div>
-          <div class="teaser">
-            <button data-teaser="t3" data-val="yes">Yes</button>
-            <button data-teaser="t3" data-val="no">No</button>
-          </div>
-          <div id="a-t3" class="hide"><span class="pill">Answer</span>
-            <p>That “incomplete emptying” feeling is one of the IPSS items. Let’s measure it accurately.</p>
-          </div>
-        </div>
+          <p class="note">Privacy: Only your email is submitted. No other data is collected.</p>
+        </form>
       </div>
 
-      <div class="cta">
-        <button id="startIpSS" class="btn">Continue to IPSS</button>
-        <button id="skipToIpSS" class="btn alt">Skip teasers → IPSS</button>
-      </div>
-
-      <div class="hr"></div>
-
-      <!-- IPSS Form -->
+      <!-- IPSS Form (hidden until email submitted) -->
       <div id="ipssSection" class="hide">
-        <h2>Step 2 — IPSS (International Prostate Symptom Score)</h2>
-        <p>For each question, choose the option that best describes the last month. Scores: 0 (Never) to 5 (Almost always).</p>
-
+        <h2>Step 2 — IPSS Questionnaire</h2>
         <form id="ipssForm">
           <div id="ipssQuestions"></div>
-
           <h2>Quality of Life (Bother) Question</h2>
-          <p>If you were to spend the rest of your life with your urinary condition just the way it is now, how would you feel about that?</p>
           <fieldset>
             <div class="options">
               <label class="opt"><input type="radio" name="qol" value="0" required/> Delighted (0)</label>
@@ -115,34 +144,11 @@
               <label class="opt"><input type="radio" name="qol" value="6"/> Terrible (6)</label>
             </div>
           </fieldset>
-
           <div class="cta">
             <button type="submit" class="btn">See my score</button>
-            <button type="reset" id="resetBtn" class="btn alt">Reset</button>
           </div>
         </form>
-
         <div id="result" class="result hide"></div>
-
-        <div id="lead" class="hide">
-          <div class="hr"></div>
-          <h2>Get your score by email (optional)</h2>
-          <p>Enter your email to receive a copy of your IPSS result and occasional educational updates. No other data collected.</p>
-          <form id="leadForm">
-            <div class="row">
-              <input type="email" id="email" placeholder="Email (required to receive your result)" required
-                     style="padding:12px; border-radius:10px; border:1px solid #27406f; background:#0f1830; color:var(--ink)"/>
-            </div>
-            <label style="display:flex; gap:8px; align-items:flex-start; margin-top:10px; font-size:12px; color:var(--muted)">
-              <input type="checkbox" id="consent" required/> I agree to receive my result and educational messages about urinary health (opt out anytime).
-            </label>
-            <div class="cta">
-              <button type="submit" class="btn">Email me my result</button>
-            </div>
-            <p class="note">Privacy: Only your email is submitted. If you prefer not to share it, you can simply view your score above.</p>
-          </form>
-        </div>
-
         <div class="footer">
           <p><strong>Disclaimer:</strong> This tool is for education only and does not diagnose, treat, or replace professional medical advice.</p>
         </div>
@@ -151,23 +157,6 @@
   </div>
 
   <script>
-    // ====== Curiosity mechanic for teasers ======
-    document.querySelectorAll('.teaser button').forEach(btn=>{
-      btn.addEventListener('click', ()=>{
-        const t = btn.getAttribute('data-teaser');
-        document.getElementById('a-'+t).classList.remove('hide');
-      });
-    });
-    document.getElementById('startIpSS').addEventListener('click', ()=>{
-      document.getElementById('ipssSection').classList.remove('hide');
-      window.scrollTo({top:document.getElementById('ipssSection').offsetTop-10, behavior:'smooth'});
-    });
-    document.getElementById('skipToIpSS').addEventListener('click', ()=>{
-      document.getElementById('ipssSection').classList.remove('hide');
-      window.scrollTo({top:document.getElementById('ipssSection').offsetTop-10, behavior:'smooth'});
-    });
-
-    // ====== Build IPSS questions ======
     const ipssItems = [
       {key:'q1', text:'Incomplete emptying: How often have you had a sensation of not emptying your bladder completely after you finished urinating?'},
       {key:'q2', text:'Frequency: How often have you had to urinate again less than two hours after you last finished urinating?'},
@@ -178,20 +167,12 @@
       {key:'q7', text:'Nocturia: How many times do you typically get up at night to urinate? (0 to 5+ times)'}
     ];
     const generic = [
-      {v:0,l:'Never (0)'},
-      {v:1,l:'Less than 1 in 5 times (1)'},
-      {v:2,l:'Less than half the time (2)'},
-      {v:3,l:'About half the time (3)'},
-      {v:4,l:'More than half the time (4)'},
-      {v:5,l:'Almost always (5)'}
+      {v:0,l:'Never (0)'},{v:1,l:'Less than 1 in 5 times (1)'},{v:2,l:'Less than half the time (2)'},
+      {v:3,l:'About half the time (3)'},{v:4,l:'More than half the time (4)'},{v:5,l:'Almost always (5)'}
     ];
     const nocturia = [
-      {v:0,l:'0 times (0)'},
-      {v:1,l:'1 time (1)'},
-      {v:2,l:'2 times (2)'},
-      {v:3,l:'3 times (3)'},
-      {v:4,l:'4 times (4)'},
-      {v:5,l:'5 or more times (5)'}
+      {v:0,l:'0 times (0)'},{v:1,l:'1 time (1)'},{v:2,l:'2 times (2)'},
+      {v:3,l:'3 times (3)'},{v:4,l:'4 times (4)'},{v:5,l:'5 or more times (5)'}
     ];
     const qWrap = document.getElementById('ipssQuestions');
     ipssItems.forEach((it, idx)=>{
@@ -213,11 +194,20 @@
       qWrap.appendChild(fs);
     });
 
-    // ====== Calculate score & show ======
-    let lastScore = null;
-    let lastSeverity = null;
-    const form = document.getElementById('ipssForm');
-    form.addEventListener('submit', (e)=>{
+    // Email gate
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybQNdlEGIYavav9RQvVpkzZCA-FlG72sRjLHKWWlnPZm7MXTMbR4RgTyL_78IEL1tGwA/exec";
+    document.getElementById('gateForm').addEventListener('submit', async (e)=>{
+      e.preventDefault();
+      const email = document.getElementById('email').value.trim();
+      const consent = document.getElementById('consent').checked;
+      if(!email || !consent){ alert("Please enter email and tick consent."); return; }
+      try{ await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', body: JSON.stringify({ email, source:'github' }) }); }catch(err){}
+      document.getElementById('gate').classList.add('hide');
+      document.getElementById('ipssSection').classList.remove('hide');
+    });
+
+    // Score calculation
+    document.getElementById('ipssForm').addEventListener('submit', (e)=>{
       e.preventDefault();
       let total = 0;
       for(let i=1;i<=7;i++){
@@ -228,51 +218,15 @@
       const qol = parseInt((document.querySelector('input[name="qol"]:checked')||{value:NaN}).value,10);
       const cat = total<=7 ? 'Mild' : (total<=19 ? 'Moderate' : 'Severe');
       const badgeClass = total<=7 ? 'mild' : (total<=19 ? 'moderate' : 'severe');
-      lastScore = total; lastSeverity = cat;
-
-      const guidance = total<=7
-        ? 'Your symptoms are in the mild range.'
-        : (total<=19 ? 'Your symptoms are in the moderate range.' : 'Your symptoms are in the severe range.');
-
+      const guidance = total<=7 ? 'Your symptoms are in the mild range.' : (total<=19 ? 'Your symptoms are in the moderate range.' : 'Your symptoms are in the severe range.');
       const res = document.getElementById('result');
       res.classList.remove('hide');
       res.innerHTML = `
         <div><span class="pill">Your IPSS</span></div>
-        <h2 style="margin:8px 0 0">Total: <span class="badge ${badgeClass}">${total} / 35 • ${cat}</span></h2>
-        <p style="margin:8px 0 12px">Quality-of-life (bother): <strong>${isNaN(qol)?'—':''+qol+' / 6'}</strong></p>
+        <h2>Total: <span class="badge ${badgeClass}">${total} / 35 • ${cat}</span></h2>
+        <p>Quality-of-life (bother): <strong>${isNaN(qol)?'—':qol+' / 6'}</strong></p>
         <p>${guidance} This is for education only and not medical advice.</p>
       `;
-
-      document.getElementById('lead').classList.remove('hide');
-      window.scrollTo({top:res.offsetTop-10, behavior:'smooth'});
-    });
-
-    document.getElementById('resetBtn').addEventListener('click', ()=>{
-      form.reset();
-      document.getElementById('result').classList.add('hide');
-      document.getElementById('lead').classList.add('hide');
-      lastScore = null; lastSeverity = null;
-    });
-
-    // ====== Email-only capture to Google Apps Script ======
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybQNdlEGIYavav9RQvVpkzZCA-FlG72sRjLHKWWlnPZm7MXTMbR4RgTyL_78IEL1tGwA/exec"; // <-- replace after deploy
-    document.getElementById('leadForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
-      const email = (document.getElementById('email').value||'').trim();
-      const consent = document.getElementById('consent').checked;
-      if(!email){ alert('Please enter your email.'); return; }
-      if(!consent){ alert('Please tick consent.'); return; }
-
-      // Only email is sent per your request.
-      const payload = { email: email, source: "github" };
-
-      try{
-        await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', body: JSON.stringify(payload) });
-        alert('Thanks! Your email has been recorded. Please check your inbox.');
-      }catch(err){
-        console.error(err);
-        alert('Submitted (fallback). If you don’t receive an email, please try again later.');
-      }
     });
   </script>
 </body>
