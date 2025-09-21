@@ -1,4 +1,4 @@
-  <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -56,7 +56,7 @@
       padding: 12px 18px; border-radius: 8px; font-weight: 600; cursor:pointer;
     }
     .btn.alt {
-      background:#f3f4f6; color: var(--ink); border:1px solid #d1d5db;
+      background:#f3f4f6; color:var(--ink); border:1px solid #d1d5db;
     }
     .hide { display:none; }
     .result {
@@ -85,8 +85,15 @@
         <h2>Step 1 — Get started</h2>
         <form id="gateForm">
           <div class="row">
-            <input type="email" id="email" placeholder="Email (required to continue)" required />
+            <!-- ✅ added name="email" -->
+            <input type="email" id="email" name="email"
+                   placeholder="Email (required to continue)" required />
           </div>
+          <!-- hidden metadata -->
+          <input type="hidden" name="source" value="github">
+          <input type="hidden" name="ua" id="ua_field">
+          <input type="hidden" name="ref" id="ref_field">
+
           <label style="display:flex; gap:8px; align-items:flex-start; margin-top:10px; font-size:12px; color:var(--muted)">
             <input type="checkbox" id="consent" required/> I agree to receive my result and educational messages about urinary health (opt out anytime).
           </label>
@@ -169,27 +176,32 @@
       qWrap.appendChild(fs);
     });
 
-    // Email gate → Apps Script (form-encoded, more reliable with no-cors)
+    // Email gate → Apps Script
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybQNdlEGIYavav9RQvVpkzZCA-FlG72sRjLHKWWlnPZm7MXTMbR4RgTyL_78IEL1tGwA/exec";
+
     document.getElementById('gateForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       const consent = document.getElementById('consent').checked;
       if(!email || !consent){ alert("Please enter email and tick consent."); return; }
 
-      const body = new URLSearchParams({ email, source: 'github' });
+      // fill metadata
+      document.getElementById('ua_field').value  = navigator.userAgent || '';
+      document.getElementById('ref_field').value = document.referrer || location.href;
+
+      const body = new URLSearchParams(new FormData(e.target));
+
       try {
         await fetch(SCRIPT_URL, {
           method: 'POST',
           mode: 'no-cors',
-          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
           body
         });
       } catch (err) {
-        console.warn('POST fallback:', err);
+        console.warn('POST error:', err);
       }
 
-      // Reveal IPSS regardless (response is opaque under no-cors)
+      // Reveal IPSS regardless
       document.getElementById('gate').classList.add('hide');
       document.getElementById('ipssSection').classList.remove('hide');
     });
