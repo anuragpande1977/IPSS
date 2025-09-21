@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+  <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -10,10 +10,11 @@
       --card: #ffffff;
       --ink: #1f2937;
       --muted: #6b7280;
-      --accent: #2563eb;
-      --ok: #16a34a;
-      --warn: #ca8a04;
-      --bad: #dc2626;
+      --accent: #2563eb;  /* buttons/links */
+      --ok: #16a34a;      /* mild */
+      --warn: #ca8a04;    /* moderate */
+      --bad: #dc2626;     /* severe */
+      --border: #e5e7eb;
     }
     body {
       margin: 0;
@@ -21,79 +22,49 @@
       background: var(--bg);
       color: var(--ink);
     }
-    .wrap {
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 24px;
-    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 24px; }
     .card {
       background: var(--card);
       border-radius: 12px;
       padding: 24px;
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border: 1px solid var(--border);
     }
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-    h2 {
-      font-size: 20px;
-      margin: 20px 0 10px;
-      font-weight: 600;
-    }
-    p { color: var(--muted); line-height: 1.55 }
+    h1 { font-size: 28px; font-weight: 700; margin: 0 0 8px; }
+    h2 { font-size: 20px; margin: 20px 0 10px; font-weight: 600; }
+    p { color: var(--muted); line-height: 1.55; }
     .pill {
-      display:inline-block;
-      padding:4px 10px;
-      border-radius:999px;
-      font-size:12px;
-      background:#e5e7eb;
-      color:#374151;
-      margin-bottom:12px;
+      display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px;
+      background:#eef2ff; color:#3730a3; margin: 0 0 12px;
     }
     .options { display:grid; gap:8px; }
     label.opt {
-      display:flex;
-      align-items:center;
-      gap:10px;
-      background:#f3f4f6;
-      border:1px solid #d1d5db;
-      padding:10px 12px;
-      border-radius:8px;
-      cursor:pointer;
-      transition: background 0.2s;
+      display:flex; align-items:center; gap:10px;
+      background:#f3f4f6; border:1px solid #d1d5db;
+      padding:10px 12px; border-radius:8px; cursor:pointer; transition: background .2s;
     }
     label.opt:hover { background:#e5e7eb; }
-    input[type="radio"]{accent-color:var(--accent)}
+    input[type="radio"]{ accent-color: var(--accent); }
+    input[type="email"] {
+      padding:12px; border-radius:8px; border:1px solid #d1d5db; width:100%;
+      background:#fff; color:var(--ink);
+    }
     .row { display:grid; gap:12px; }
-    .cta { display:flex; gap:10px; margin-top:16px; }
+    .cta { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
     .btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor:pointer;
+      background: var(--accent); color: #fff; border: none;
+      padding: 12px 18px; border-radius: 8px; font-weight: 600; cursor:pointer;
     }
     .btn.alt {
-      background:#f3f4f6;
-      color: var(--ink);
-      border:1px solid #d1d5db;
+      background:#f3f4f6; color: var(--ink); border:1px solid #d1d5db;
     }
+    .hide { display:none; }
     .result {
-      margin-top: 18px;
-      padding: 16px;
-      border-radius: 8px;
-      background: #f9fafb;
-      border: 1px dashed #d1d5db;
+      margin-top: 18px; padding: 16px; border-radius: 8px;
+      background: #f9fafb; border: 1px dashed #d1d5db;
     }
     .badge {
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 14px;
+      font-weight: 700; padding: 4px 10px; border-radius: 999px; font-size: 14px;
     }
     .mild { background:#dcfce7; color:var(--ok); }
     .moderate { background:#fef9c3; color:var(--warn); }
@@ -107,15 +78,14 @@
     <div class="card">
       <h1>IPSS Symptom Check</h1>
       <span class="pill">Educational • 2–3 minutes</span>
-      <p>Enter your email to continue. You’ll see your personal IPSS score (mild / moderate / severe) immediately on the next step. This is educational only and not medical advice.</p>
+      <p>Enter your email to continue. You’ll see your personal IPSS score (mild / moderate / severe) on the next step. This is educational only and not medical advice.</p>
 
       <!-- Email Gate -->
       <div id="gate">
         <h2>Step 1 — Get started</h2>
         <form id="gateForm">
           <div class="row">
-            <input type="email" id="email" placeholder="Email (required to continue)" required
-                   style="padding:12px; border-radius:8px; border:1px solid #d1d5db;"/>
+            <input type="email" id="email" placeholder="Email (required to continue)" required />
           </div>
           <label style="display:flex; gap:8px; align-items:flex-start; margin-top:10px; font-size:12px; color:var(--muted)">
             <input type="checkbox" id="consent" required/> I agree to receive my result and educational messages about urinary health (opt out anytime).
@@ -132,6 +102,7 @@
         <h2>Step 2 — IPSS Questionnaire</h2>
         <form id="ipssForm">
           <div id="ipssQuestions"></div>
+
           <h2>Quality of Life (Bother) Question</h2>
           <fieldset>
             <div class="options">
@@ -144,11 +115,14 @@
               <label class="opt"><input type="radio" name="qol" value="6"/> Terrible (6)</label>
             </div>
           </fieldset>
+
           <div class="cta">
             <button type="submit" class="btn">See my score</button>
           </div>
         </form>
+
         <div id="result" class="result hide"></div>
+
         <div class="footer">
           <p><strong>Disclaimer:</strong> This tool is for education only and does not diagnose, treat, or replace professional medical advice.</p>
         </div>
@@ -157,6 +131,7 @@
   </div>
 
   <script>
+    // Build IPSS questions
     const ipssItems = [
       {key:'q1', text:'Incomplete emptying: How often have you had a sensation of not emptying your bladder completely after you finished urinating?'},
       {key:'q2', text:'Frequency: How often have you had to urinate again less than two hours after you last finished urinating?'},
@@ -194,14 +169,27 @@
       qWrap.appendChild(fs);
     });
 
-    // Email gate
+    // Email gate → Apps Script (form-encoded, more reliable with no-cors)
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybQNdlEGIYavav9RQvVpkzZCA-FlG72sRjLHKWWlnPZm7MXTMbR4RgTyL_78IEL1tGwA/exec";
     document.getElementById('gateForm').addEventListener('submit', async (e)=>{
       e.preventDefault();
       const email = document.getElementById('email').value.trim();
       const consent = document.getElementById('consent').checked;
       if(!email || !consent){ alert("Please enter email and tick consent."); return; }
-      try{ await fetch(SCRIPT_URL, { method:'POST', mode:'no-cors', body: JSON.stringify({ email, source:'github' }) }); }catch(err){}
+
+      const body = new URLSearchParams({ email, source: 'github' });
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body
+        });
+      } catch (err) {
+        console.warn('POST fallback:', err);
+      }
+
+      // Reveal IPSS regardless (response is opaque under no-cors)
       document.getElementById('gate').classList.add('hide');
       document.getElementById('ipssSection').classList.remove('hide');
     });
@@ -213,12 +201,13 @@
       for(let i=1;i<=7;i++){
         const sel = document.querySelector('input[name="q'+i+'"]:checked');
         if(!sel){ alert('Please answer question '+i); return; }
-        total += parseInt(sel.value,10);
+        total += parseInt(sel.value, 10);
       }
       const qol = parseInt((document.querySelector('input[name="qol"]:checked')||{value:NaN}).value,10);
       const cat = total<=7 ? 'Mild' : (total<=19 ? 'Moderate' : 'Severe');
       const badgeClass = total<=7 ? 'mild' : (total<=19 ? 'moderate' : 'severe');
       const guidance = total<=7 ? 'Your symptoms are in the mild range.' : (total<=19 ? 'Your symptoms are in the moderate range.' : 'Your symptoms are in the severe range.');
+
       const res = document.getElementById('result');
       res.classList.remove('hide');
       res.innerHTML = `
