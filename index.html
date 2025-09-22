@@ -10,62 +10,31 @@
       --card: #ffffff;
       --ink: #1f2937;
       --muted: #6b7280;
-      --accent: #2563eb;  /* buttons/links */
-      --ok: #16a34a;      /* mild */
-      --warn: #ca8a04;    /* moderate */
-      --bad: #dc2626;     /* severe */
+      --accent: #2563eb;
+      --ok: #16a34a;
+      --warn: #ca8a04;
+      --bad: #dc2626;
       --border: #e5e7eb;
     }
-    body {
-      margin: 0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--ink);
-    }
+    body { margin: 0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif; background: var(--bg); color: var(--ink); }
     .wrap { max-width: 900px; margin: 0 auto; padding: 24px; }
-    .card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 24px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-      border: 1px solid var(--border);
-    }
+    .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 4px 12px rgba(0,0,0,0.08); border: 1px solid var(--border); }
     h1 { font-size: 28px; font-weight: 700; margin: 0 0 8px; }
     h2 { font-size: 20px; margin: 20px 0 10px; font-weight: 600; }
     p { color: var(--muted); line-height: 1.55; }
-    .pill {
-      display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px;
-      background:#eef2ff; color:#3730a3; margin: 0 0 12px;
-    }
+    .pill { display:inline-block; padding:4px 10px; border-radius:999px; font-size:12px; background:#eef2ff; color:#3730a3; margin: 0 0 12px; }
     .options { display:grid; gap:8px; }
-    label.opt {
-      display:flex; align-items:center; gap:10px;
-      background:#f3f4f6; border:1px solid #d1d5db;
-      padding:10px 12px; border-radius:8px; cursor:pointer; transition: background .2s;
-    }
+    label.opt { display:flex; align-items:center; gap:10px; background:#f3f4f6; border:1px solid #d1d5db; padding:10px 12px; border-radius:8px; cursor:pointer; transition: background .2s; }
     label.opt:hover { background:#e5e7eb; }
     input[type="radio"]{ accent-color: var(--accent); }
-    input[type="email"] {
-      padding:12px; border-radius:8px; border:1px solid #d1d5db; width:100%;
-      background:#fff; color:var(--ink);
-    }
+    input[type="email"] { padding:12px; border-radius:8px; border:1px solid #d1d5db; width:100%; background:#fff; color:var(--ink); }
     .row { display:grid; gap:12px; }
     .cta { display:flex; gap:10px; margin-top:16px; flex-wrap:wrap; }
-    .btn {
-      background: var(--accent); color: #fff; border: none;
-      padding: 12px 18px; border-radius: 8px; font-weight: 600; cursor:pointer;
-    }
-    .btn.alt {
-      background:#f3f4f6; color:var(--ink); border:1px solid #d1d5db;
-    }
+    .btn { background: var(--accent); color: #fff; border: none; padding: 12px 18px; border-radius: 8px; font-weight: 600; cursor:pointer; }
+    .btn.alt { background:#f3f4f6; color:var(--ink); border:1px solid #d1d5db; }
     .hide { display:none; }
-    .result {
-      margin-top: 18px; padding: 16px; border-radius: 8px;
-      background: #f9fafb; border: 1px dashed #d1d5db;
-    }
-    .badge {
-      font-weight: 700; padding: 4px 10px; border-radius: 999px; font-size: 14px;
-    }
+    .result { margin-top: 18px; padding: 16px; border-radius: 8px; background: #f9fafb; border: 1px dashed #d1d5db; }
+    .badge { font-weight: 700; padding: 4px 10px; border-radius: 999px; font-size: 14px; }
     .mild { background:#dcfce7; color:var(--ok); }
     .moderate { background:#fef9c3; color:var(--warn); }
     .severe { background:#fee2e2; color:var(--bad); }
@@ -74,29 +43,40 @@
   </style>
 </head>
 <body>
+  <!-- Hidden iframe ensures the form posts without leaving the page -->
+  <iframe name="hidden_iframe" style="display:none;"></iframe>
+
   <div class="wrap">
     <div class="card">
       <h1>IPSS Symptom Check</h1>
       <span class="pill">Educational • 2–3 minutes</span>
       <p>Enter your email to continue. You’ll see your personal IPSS score (mild / moderate / severe) on the next step. This is educational only and not medical advice.</p>
 
-      <!-- Email Gate -->
+      <!-- Step 1 — Email Gate -->
       <div id="gate">
         <h2>Step 1 — Get started</h2>
-        <form id="gateForm">
+
+        <!-- IMPORTANT: replace YOUR_EXEC_URL with your Apps Script Web App /exec URL -->
+        <form id="gateForm"
+              action="YOUR_EXEC_URL"
+              method="post"
+              target="hidden_iframe"
+              onsubmit="return onGateSubmit(event)">
           <div class="row">
-            <!-- ✅ added name="email" -->
+            <!-- name="email" is REQUIRED so Apps Script receives e.parameter.email -->
             <input type="email" id="email" name="email"
                    placeholder="Email (required to continue)" required />
           </div>
-          <!-- hidden metadata -->
+
+          <!-- Optional context fields you can log in your sheet -->
           <input type="hidden" name="source" value="github">
-          <input type="hidden" name="ua" id="ua_field">
+          <input type="hidden" name="ua"  id="ua_field">
           <input type="hidden" name="ref" id="ref_field">
 
           <label style="display:flex; gap:8px; align-items:flex-start; margin-top:10px; font-size:12px; color:var(--muted)">
             <input type="checkbox" id="consent" required/> I agree to receive my result and educational messages about urinary health (opt out anytime).
           </label>
+
           <div class="cta">
             <button type="submit" class="btn">Continue</button>
           </div>
@@ -104,7 +84,7 @@
         </form>
       </div>
 
-      <!-- IPSS Form (hidden until email submitted) -->
+      <!-- Step 2 — IPSS Form (local scoring only; nothing is sent) -->
       <div id="ipssSection" class="hide">
         <h2>Step 2 — IPSS Questionnaire</h2>
         <form id="ipssForm">
@@ -138,7 +118,7 @@
   </div>
 
   <script>
-    // Build IPSS questions
+    // Build IPSS questions dynamically
     const ipssItems = [
       {key:'q1', text:'Incomplete emptying: How often have you had a sensation of not emptying your bladder completely after you finished urinating?'},
       {key:'q2', text:'Frequency: How often have you had to urinate again less than two hours after you last finished urinating?'},
@@ -176,37 +156,29 @@
       qWrap.appendChild(fs);
     });
 
-    // Email gate → Apps Script
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbybQNdlEGIYavav9RQvVpkzZCA-FlG72sRjLHKWWlnPZm7MXTMbR4RgTyL_78IEL1tGwA/exec";
-
-    document.getElementById('gateForm').addEventListener('submit', async (e)=>{
-      e.preventDefault();
+    // Gate handler: validate, set hidden fields, allow native POST, then reveal step 2
+    function onGateSubmit(e){
       const email = document.getElementById('email').value.trim();
       const consent = document.getElementById('consent').checked;
-      if(!email || !consent){ alert("Please enter email and tick consent."); return; }
-
-      // fill metadata
-      document.getElementById('ua_field').value  = navigator.userAgent || '';
-      document.getElementById('ref_field').value = document.referrer || location.href;
-
-      const body = new URLSearchParams(new FormData(e.target));
-
-      try {
-        await fetch(SCRIPT_URL, {
-          method: 'POST',
-          mode: 'no-cors',
-          body
-        });
-      } catch (err) {
-        console.warn('POST error:', err);
+      if(!email || !consent){
+        alert('Please enter your email and tick consent to continue.');
+        return false; // block submit
       }
+      // populate hidden metadata right before submit
+      const uaEl  = document.getElementById('ua_field');
+      const refEl = document.getElementById('ref_field');
+      if (uaEl)  uaEl.value  = navigator.userAgent || '';
+      if (refEl) refEl.value = document.referrer || location.href;
 
-      // Reveal IPSS regardless
-      document.getElementById('gate').classList.add('hide');
-      document.getElementById('ipssSection').classList.remove('hide');
-    });
+      // let the browser POST to Apps Script (hidden iframe), then reveal Step 2
+      setTimeout(()=>{
+        document.getElementById('gate').classList.add('hide');
+        document.getElementById('ipssSection').classList.remove('hide');
+      }, 300);
+      return true; // allow submit
+    }
 
-    // Score calculation
+    // Local score calculation (no network calls)
     document.getElementById('ipssForm').addEventListener('submit', (e)=>{
       e.preventDefault();
       let total = 0;
@@ -218,7 +190,9 @@
       const qol = parseInt((document.querySelector('input[name="qol"]:checked')||{value:NaN}).value,10);
       const cat = total<=7 ? 'Mild' : (total<=19 ? 'Moderate' : 'Severe');
       const badgeClass = total<=7 ? 'mild' : (total<=19 ? 'moderate' : 'severe');
-      const guidance = total<=7 ? 'Your symptoms are in the mild range.' : (total<=19 ? 'Your symptoms are in the moderate range.' : 'Your symptoms are in the severe range.');
+      const guidance = total<=7 ? 'Your symptoms are in the mild range.'
+                                : (total<=19 ? 'Your symptoms are in the moderate range.'
+                                             : 'Your symptoms are in the severe range.');
 
       const res = document.getElementById('result');
       res.classList.remove('hide');
